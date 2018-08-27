@@ -10,5 +10,6 @@ func InitRouter() *gin.Engine{
     router := gin.Default()
 
     router.GET("/", api.IndexHandler)
+    router.GET("/account", api.AccountHandler)
     return router
 }

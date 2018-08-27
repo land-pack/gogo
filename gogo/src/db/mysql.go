@@ -17,7 +17,7 @@ var SqlDB * sql.DB
 
 func InitDB(){
     var err error
-    SqlDB, err = sql.Open("mysql", "frank:openmysql@tcp(192.168.1.203:3306)/gotest?parseTime=true")
+    SqlDB, err = sql.Open("mysql", "frank:openmysql@tcp(192.168.1.203:3306)/test?parseTime=true")
 
     if err != nil {
         log.Fatalln(err)
