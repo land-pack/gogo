@@ -4,7 +4,7 @@ import (
     "github.com/gin-gonic/gin"
     "models"
     "lib"
-    "fmt"
+    "define"
 )
 
 type Request struct {
@@ -19,17 +19,20 @@ func AccountHandler(c *gin.Context) {
 func RegisterHandler(c *gin.Context){
     var req Request
     c.BindJSON(&req)
-    fmt.Println("req>>:", req)
-    fmt.Println("uid>>", req.Uid)
-    coin_type := 3545
-    ret := models.FetchAccount(req.Uid, coin_type)
-    fmt.Println("ret>", ret)
-    //models.Register(19)
-    if (models.Account{}) == ret {
-        fmt.Println("Create new one")
-    }else{
-        fmt.Println(ret)
+    balance_freeze := 0.0
+    var newAccount = []define.CoinType{}
 
+    ret := models.FetchAccount(req.Uid, define.SEELE.CoinCode)
+    if (models.Account{}) == ret {
+        models.Register(req.Uid, balance_freeze, define.SEELE)
+        newAccount = append(newAccount, define.SEELE)
     }
-    lib.Render(c,"222", "WW", "xxx")
+
+    ret = models.FetchAccount(req.Uid, define.BTC.CoinCode)
+    if (models.Account{}) == ret {
+        models.Register(req.Uid, balance_freeze, define.BTC)
+        newAccount = append(newAccount, define.BTC)
+    }
+
+    lib.Render(c,"222", "WW", newAccount)
 }

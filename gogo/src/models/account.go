@@ -4,14 +4,15 @@ import (
     "log"
     "db"
     "fmt"
+    "define"
 )
 
-
-
-
-///api/v1/register
-func  Register(uid int, coin_type int, coin_name string, balance_freeze float64) {
+//api/v1/register
+func  Register(uid int, balance_freeze float64, coinT define.CoinType) {
     fmt.Println(uid)
+    coin_type := coinT.CoinCode
+    coin_name := coinT.CoinName
+    fmt.Printf("coin_type=%d | coin_name=%s\n", coin_type, coin_name)
     sql := `INSERT INTO 
             t_account(f_uid, f_balance_freeze, f_coin_type, f_coin_name)
             VALUES(?, ?, ?, ?)
@@ -32,10 +33,6 @@ func  Register(uid int, coin_type int, coin_name string, balance_freeze float64)
     }
     fmt.Printf("Insert successful %d\n", _id)
 }
-
-
-
-
 
 
 type Account struct {
