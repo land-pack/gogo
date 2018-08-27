@@ -1,8 +1,8 @@
 package lib
 
 import (
-    "github.com/go-sql-driver/mysql"
     "net/http"
+    "github.com/gin-gonic/gin"
 )
 
 type Response struct {

@@ -11,7 +11,7 @@ type MySQLVersion struct {
     Version string `json:"version"`
 }
 
-func FetchVersion(){
+func FetchVersion() string{
     //db.Ping()
     sql := `SELECT VERSION() as version;`
     var version  string
@@ -24,5 +24,5 @@ func FetchVersion(){
     }
     stmt.QueryRow().Scan(&version)
     fmt.Println(version)
-    //return version
+    return version
 }
