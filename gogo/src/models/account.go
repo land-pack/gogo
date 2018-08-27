@@ -9,9 +9,8 @@ import (
 
 
 
-
 ///api/v1/register
-func  Register(uid int) {
+func  Register(uid int, coin_type int, coin_name string, balance_freeze float64) {
     fmt.Println(uid)
     sql := `INSERT INTO 
             t_account(f_uid, f_balance_freeze, f_coin_type, f_coin_name)
@@ -23,7 +22,7 @@ func  Register(uid int) {
         log.Fatalln(err)
     }
 
-    ret, err := stmt.Exec(12, 0, 1, "XX")
+    ret, err := stmt.Exec(uid, balance_freeze, coin_type, coin_name)
     if err != nil {
         log.Fatalln(err)
     }
@@ -45,11 +44,11 @@ type Account struct {
     CoinName string `json:"coin_name"`
 }
 
-func FetchAccount() Account{
+func FetchAccount(uid int, coin_type int) Account{
     //db.Ping()
     sql := `SELECT f_uid as uid, f_coin_type as coin_type, f_coin_name as coin_name
             FROM t_account
-            WHERE f_uid=?`
+            WHERE f_uid=? AND f_coin_type=?`
     var account  Account
 
     stmt, err := db.SqlDB.Prepare(sql)
@@ -59,7 +58,7 @@ func FetchAccount() Account{
         fmt.Println(err)
         log.Fatalln(err)
     }
-    err = stmt.QueryRow(88888).Scan(&account.Uid, &account.CoinType, &account.CoinName)
+    err = stmt.QueryRow(uid, coin_type).Scan(&account.Uid, &account.CoinType, &account.CoinName)
     if err != nil {
         //log.Fatalln(err)
         fmt.Println(err)
