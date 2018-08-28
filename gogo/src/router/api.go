@@ -11,6 +11,7 @@ func InitRouter() *gin.Engine{
 
     router.GET("/", api.IndexHandler)
     router.GET("/account", api.AccountHandler)
+    router.POST("/accounts", api.AccountsHandler)
     router.POST("/register", api.RegisterHandler)
     return router
 }

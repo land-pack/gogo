@@ -60,6 +60,33 @@ func FetchAccount(uid int, coin_type int) Account{
         //log.Fatalln(err)
         fmt.Println(err)
      }
-
     return account
+}
+
+func FetchAccounts(uid int) [] Account{
+    //db.Ping()
+    sql := `SELECT f_uid as uid, f_coin_type as coin_type, f_coin_name as coin_name
+            FROM t_account
+            WHERE f_uid=?`
+    var account  Account
+    var accounts = make([]Account, 0)
+
+    stmt, err := db.SqlDB.Prepare(sql)
+    defer stmt.Close()
+
+    if err != nil {
+        fmt.Println(err)
+        log.Fatalln(err)
+    }
+    rows, err := stmt.Query(uid)
+    if err != nil {
+        //log.Fatalln(err)
+        fmt.Println(err)
+     }
+    for rows.Next() {
+        rows.Scan(&account.Uid, &account.CoinType, &account.CoinName)
+        accounts = append(accounts, account)
+    }
+
+    return accounts
 }

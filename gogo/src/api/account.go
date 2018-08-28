@@ -11,6 +11,14 @@ type Request struct {
     Uid int `json:"uid"`
 }
 
+func AccountsHandler(c *gin.Context) {
+    var req Request
+    c.BindJSON(&req)
+    var accounts = models.FetchAccounts(req.Uid)
+    lib.Render(c, "200", "OK", accounts)
+}
+
+
 func AccountHandler(c *gin.Context) {
     var account = models.FetchAccount(12,22)
     lib.Render(c, "200", "OK", account)
