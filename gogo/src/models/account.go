@@ -43,6 +43,10 @@ type Account struct {
     BalanceFreeze string `json:"balance_freeze"`
 }
 
+type AccountData struct {
+    Accounts []Account `json:"accounts"`
+}
+
 func FetchAccount(uid int, coin_type int) Account{
     //db.Ping()
     sql := `SELECT f_uid as uid, f_coin_type as coin_type, f_coin_name as coin_name, 
@@ -67,7 +71,7 @@ func FetchAccount(uid int, coin_type int) Account{
     return account
 }
 
-func FetchAccounts(uid int) []Account{
+func FetchAccounts(uid int) AccountData{
     //db.Ping()
     sql := `SELECT f_uid as uid, f_coin_type as coin_type, f_coin_name as coin_name,
                 f_balance as balance, f_balance_freeze as balance_freeze
@@ -94,5 +98,5 @@ func FetchAccounts(uid int) []Account{
         accounts = append(accounts, account)
     }
 
-    return accounts
+    return AccountData{Accounts:accounts}
 }

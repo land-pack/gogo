@@ -15,6 +15,7 @@ func AccountsHandler(c *gin.Context) {
     var req Request
     c.BindJSON(&req)
     var accounts = models.FetchAccounts(req.Uid)
+
     lib.Render(c, "200", "OK", accounts)
 }
 
