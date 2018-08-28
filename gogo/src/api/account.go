@@ -9,6 +9,7 @@ import (
 
 type Request struct {
     Uid int `json:"uid"`
+    CoinCode int `json:"coin_type"`
 }
 
 func AccountsHandler(c *gin.Context) {
@@ -21,7 +22,9 @@ func AccountsHandler(c *gin.Context) {
 
 
 func AccountHandler(c *gin.Context) {
-    var account = models.FetchAccount(12,22)
+    var req Request
+    c.BindJSON(&req)
+    var account = models.FetchAccount(req.Uid, req.CoinCode)
     lib.Render(c, "200", "OK", account)
 }
 

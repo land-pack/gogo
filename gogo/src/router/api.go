@@ -10,7 +10,7 @@ func InitRouter() *gin.Engine{
     router := gin.Default()
 
     router.GET("/", api.IndexHandler)
-    router.GET("/account", api.AccountHandler)
+    router.POST("/api/v1/balance", api.AccountHandler)
     router.POST("/accounts", api.AccountsHandler)
     router.POST("/register", api.RegisterHandler)
     return router

@@ -48,7 +48,6 @@ type AccountData struct {
 }
 
 func FetchAccount(uid int, coin_type int) Account{
-    //db.Ping()
     sql := `SELECT f_uid as uid, f_coin_type as coin_type, f_coin_name as coin_name, 
                 f_balance as balance, f_balance_freeze as balance_freeze
             FROM t_account
@@ -72,7 +71,6 @@ func FetchAccount(uid int, coin_type int) Account{
 }
 
 func FetchAccounts(uid int) AccountData{
-    //db.Ping()
     sql := `SELECT f_uid as uid, f_coin_type as coin_type, f_coin_name as coin_name,
                 f_balance as balance, f_balance_freeze as balance_freeze
             FROM t_account
@@ -100,3 +98,27 @@ func FetchAccounts(uid int) AccountData{
 
     return AccountData{Accounts:accounts}
 }
+
+func FetchBalance(uid int, coin_type int) Account{
+    sql := `SELECT f_uid as uid, f_coin_type as coin_type, f_coin_name as coin_name, 
+                f_balance as balance, f_balance_freeze as balance_freeze
+            FROM t_account
+            WHERE f_uid=? AND f_coin_type=?`
+    var account  Account
+
+    stmt, err := db.SqlDB.Prepare(sql)
+    defer stmt.Close()
+
+    if err != nil {
+        fmt.Println(err)
+        log.Fatalln(err)
+    }
+    err = stmt.QueryRow(uid, coin_type).Scan(&account.Uid, &account.CoinType,
+    &account.CoinName, &account.Balance, &account.BalanceFreeze)
+    if err != nil {
+        //log.Fatalln(err)
+        fmt.Println(err)
+     }
+    return account
+}
+
