@@ -39,11 +39,14 @@ type Account struct {
     Uid int `json:"uid"`
     CoinType int `json:"coin_type"`
     CoinName string `json:"coin_name"`
+    Balance string `json:"balance"`
+    BalanceFreeze string `json:"balance_freeze"`
 }
 
 func FetchAccount(uid int, coin_type int) Account{
     //db.Ping()
-    sql := `SELECT f_uid as uid, f_coin_type as coin_type, f_coin_name as coin_name
+    sql := `SELECT f_uid as uid, f_coin_type as coin_type, f_coin_name as coin_name, 
+                f_balance as balance, f_balance_freeze as balance_freeze
             FROM t_account
             WHERE f_uid=? AND f_coin_type=?`
     var account  Account
@@ -55,7 +58,8 @@ func FetchAccount(uid int, coin_type int) Account{
         fmt.Println(err)
         log.Fatalln(err)
     }
-    err = stmt.QueryRow(uid, coin_type).Scan(&account.Uid, &account.CoinType, &account.CoinName)
+    err = stmt.QueryRow(uid, coin_type).Scan(&account.Uid, &account.CoinType,
+    &account.CoinName, &account.Balance, &account.BalanceFreeze)
     if err != nil {
         //log.Fatalln(err)
         fmt.Println(err)
@@ -63,9 +67,10 @@ func FetchAccount(uid int, coin_type int) Account{
     return account
 }
 
-func FetchAccounts(uid int) [] Account{
+func FetchAccounts(uid int) []Account{
     //db.Ping()
-    sql := `SELECT f_uid as uid, f_coin_type as coin_type, f_coin_name as coin_name
+    sql := `SELECT f_uid as uid, f_coin_type as coin_type, f_coin_name as coin_name,
+                f_balance as balance, f_balance_freeze as balance_freeze
             FROM t_account
             WHERE f_uid=?`
     var account  Account
@@ -84,7 +89,8 @@ func FetchAccounts(uid int) [] Account{
         fmt.Println(err)
      }
     for rows.Next() {
-        rows.Scan(&account.Uid, &account.CoinType, &account.CoinName)
+        rows.Scan(&account.Uid, &account.CoinType, &account.CoinName,
+        &account.Balance, &account.BalanceFreeze)
         accounts = append(accounts, account)
     }
 
